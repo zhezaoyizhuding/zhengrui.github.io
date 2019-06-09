@@ -1,0 +1,1030 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="编译优化,运行优化,语法糖," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZHENGRUI'BLOG" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在校园里，当我们初学Java语言时，我们的老师或许都曾经告诉过我们：Java是一种解释型语言，所以它的效率要比C/C++语言要差，要更慢。这句话并没有错误，但是随着时间的发展，它开始慢慢变得不再准确。Java虚拟机的开发者们对虚拟机进行了大量的优化，使它在运行起来或许已经不比C++语言慢多少了。 对虚拟机的优化分为早起优化（也叫编译期优化），和晚期优化（也叫运行期优化），下面Java虚拟机在这两个">
+<meta name="keywords" content="编译优化,运行优化,语法糖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java虚拟机中的优化">
+<meta property="og:url" content="https://zhezaoyizhuding.github.io/2018/11/14/Java虚拟机中的优化/index.html">
+<meta property="og:site_name" content="ZHENGRUI&#39;BLOG">
+<meta property="og:description" content="在校园里，当我们初学Java语言时，我们的老师或许都曾经告诉过我们：Java是一种解释型语言，所以它的效率要比C/C++语言要差，要更慢。这句话并没有错误，但是随着时间的发展，它开始慢慢变得不再准确。Java虚拟机的开发者们对虚拟机进行了大量的优化，使它在运行起来或许已经不比C++语言慢多少了。 对虚拟机的优化分为早起优化（也叫编译期优化），和晚期优化（也叫运行期优化），下面Java虚拟机在这两个">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://zhezaoyizhuding.github.io/2018/11/14/Java虚拟机中的优化/回边计数器执行过程.png">
+<meta property="og:updated_time" content="2019-02-07T15:44:13.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java虚拟机中的优化">
+<meta name="twitter:description" content="在校园里，当我们初学Java语言时，我们的老师或许都曾经告诉过我们：Java是一种解释型语言，所以它的效率要比C/C++语言要差，要更慢。这句话并没有错误，但是随着时间的发展，它开始慢慢变得不再准确。Java虚拟机的开发者们对虚拟机进行了大量的优化，使它在运行起来或许已经不比C++语言慢多少了。 对虚拟机的优化分为早起优化（也叫编译期优化），和晚期优化（也叫运行期优化），下面Java虚拟机在这两个">
+<meta name="twitter:image" content="https://zhezaoyizhuding.github.io/2018/11/14/Java虚拟机中的优化/回边计数器执行过程.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'JRBAME0VLD',
+      apiKey: 'b62ed43f602517ec39140c839edfa335',
+      indexName: 'ZHENGRUI',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhezaoyizhuding.github.io/2018/11/14/Java虚拟机中的优化/"/>
+
+
+
+
+
+  <title> Java虚拟机中的优化 | ZHENGRUI'BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZHENGRUI'BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">读书、健身、旅行</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhezaoyizhuding.github.io/2018/11/14/Java虚拟机中的优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhengrui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/海贼3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZHENGRUI'BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java虚拟机中的优化
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-14T16:40:34+08:00">
+                2018-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java虚拟机/" itemprop="url" rel="index">
+                    <span itemprop="name">Java虚拟机</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/14/Java虚拟机中的优化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/11/14/Java虚拟机中的优化/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/14/Java虚拟机中的优化/" class="leancloud_visitors" data-flag-title="Java虚拟机中的优化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在校园里，当我们初学Java语言时，我们的老师或许都曾经告诉过我们：Java是一种解释型语言，所以它的效率要比C/C++语言要差，要更慢。这句话并没有错误，但是随着时间的发展，它开始慢慢变得不再准确。Java虚拟机的开发者们对虚拟机进行了大量的优化，使它在运行起来或许已经不比C++语言慢多少了。</p>
+<p>对虚拟机的优化分为早起优化（也叫编译期优化），和晚期优化（也叫运行期优化），下面Java虚拟机在这两个时间点主要做了哪些优化。</p>
+<h3 id="早期优化"><a href="#早期优化" class="headerlink" title="早期优化"></a>早期优化</h3><p>这里的早期其实是一个不太确定的时间点，因为Java虚拟机中的编译其实存在两个过程：一个是将源码编译成字节码文件，另一个是将字节码编译成机器码（其实还有些虚拟机中的编译器直接将源码编译成机器码，比如AOT编译器）。有的同学可能会疑问，Java不是一门解释型语言吗？为什么还会有将字节码编译成机器码的过程，应该是解释读取字节码才对吧。事实上，确实是如此，Java程序在运行时，字节码是被解释执行的，但现在的虚拟机中增加了一个即时编译器（即JIT编译器），在Java程序运行一段时间后，其中的常用路径的字节码会被这个编译器编译成机器码，以提升运行效率。</p>
+<p>即时编译器其实主要是在运行期的优化，也就是后文将要说的晚期优化。而早期优化其实就是一些语法糖，这些都是通过Javac编译器实现的。</p>
+<h5 id="Javac编译器"><a href="#Javac编译器" class="headerlink" title="Javac编译器"></a>Javac编译器</h5><p>Javac编译器是用来编译Java语言的编译器，笔者在上篇博客提到过现在在Java虚拟机中除了可以运行Java语言，还可以运行其他的很多语言，比如Groovy，而每一个语言都会有一个自己对应的编译器将它编译成Class文件，Javac编译器就是专门用来编译Java语言的。Javac编译器是通过Java语言编写的，感兴趣的同学可以看看它的源码，下面看一下Java语言编译的过程。</p>
+<p>Java的编译过程大致可以分为三个步骤：</p>
+<ul>
+<li>解析和填充符号表：该过程进行词法分析、语法分析生成抽象语法树，并填充符号表，供之后的语义分析使用。</li>
+<li>插入式注解处理器的注解处理：对编译器的注解进行处理，通过它来读取，修改，添加语法树。</li>
+<li>分析和字节码生成：语义分析，解语法糖，字节码生成</li>
+</ul>
+<h5 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h5><p>几乎各种语言都会或多或少提供一些语法糖来方便程序的开发，虽然这些语法糖无法提升运行时的效率，但是却可以方便程序的开发以及提升代码的可读性。但是也有些观点认为太多的语法糖不一定都是有益的，因为它会隐藏代码实现的细节，所以了解语法糖背后的实现是有必要的。下面介绍一下Java中常见的语法糖。</p>
+<h6 id="字符串相加"><a href="#字符串相加" class="headerlink" title="字符串相加"></a>字符串相加</h6><p>或许有些童鞋使用过“+”号来连接字符串的操作，之前的老师或者前辈们或许都层劝诫过我们不要这样使用，因为这样的语句会生成多个字符串对象，造成不必要的内存浪费，应该使用StringBuider或者StringBuffer来替换。但事实上，现代虚拟机（比如笔者写这篇博客时JDK11都听说要出来了，笔者自己用的也是Java8）中这个字符串连接符号就是一个语法糖，在编译时，Javac会自动把它替换成StringBuider或者StringBuffer。</p>
+<p>例如，有这样一个Java源文件，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String str1 = <span class="string">"first string"</span>;</span><br><span class="line">        String str2 = <span class="string">"second string"</span>;</span><br><span class="line">        String str3 = str1 + str2;</span><br><span class="line">        <span class="keyword">return</span> str3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在用Javac将它编译成Class文件，再使用反编译工具（比如jad）将它重新还原成java源文件，就会变成下面这个样子。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_1</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo_1</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">example</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        String str1 = <span class="string">"first string"</span>;</span><br><span class="line">        String str2 = <span class="string">"second string"</span>;</span><br><span class="line">        String str3 = (<span class="keyword">new</span> StringBuilder()).append(str1).append(str2).toString();</span><br><span class="line">        <span class="keyword">return</span> str3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到“+”连接符边替换成了StringBuilder的append操作。</p>
+<h6 id="自动装箱、拆箱"><a href="#自动装箱、拆箱" class="headerlink" title="自动装箱、拆箱"></a>自动装箱、拆箱</h6><p>了解包装类的童鞋应该知道自动装箱和拆箱其实就是调用包装类的饿××.valueOf 方法和××.××val方法。例如下面这段代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">11</span>;</span><br><span class="line">        Integer b = a;</span><br><span class="line">        <span class="keyword">int</span> c = a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译后：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_2</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo_2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> a = <span class="number">11</span>;</span><br><span class="line">        Integer b = Integer.valueOf(a);</span><br><span class="line">        <span class="keyword">int</span> c = a + b.intValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到装箱时调用了Integer的valueOf方法，拆箱时调用了它的intValue方法。</p>
+<h6 id="循环遍历"><a href="#循环遍历" class="headerlink" title="循环遍历"></a>循环遍历</h6><p>java中有一种foreach循环，使用的是集合的迭代器。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_3</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; strings = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        strings.add(<span class="string">"frist"</span>);</span><br><span class="line">        strings.add(<span class="string">"second"</span>);</span><br><span class="line">        strings.add(<span class="string">"third"</span>);</span><br><span class="line">        <span class="keyword">for</span> (String s : strings) &#123;</span><br><span class="line">            s = s + <span class="string">"test"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_3</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo_3</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        List strings = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        strings.add(<span class="string">"frist"</span>);</span><br><span class="line">        strings.add(<span class="string">"second"</span>);</span><br><span class="line">        strings.add(<span class="string">"third"</span>);</span><br><span class="line">        <span class="keyword">for</span>(Iterator iterator = strings.iterator(); iterator.hasNext();)</span><br><span class="line">        &#123;</span><br><span class="line">            String s = (String)iterator.next();</span><br><span class="line">            s = (<span class="keyword">new</span> StringBuilder()).append(s).append(<span class="string">"test"</span>).toString();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="变长参数"><a href="#变长参数" class="headerlink" title="变长参数"></a>变长参数</h6><p>变长参数解语法糖后实质是个数组，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_4</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">(String...args)</span> </span>&#123;</span><br><span class="line">        args[<span class="number">0</span>] = <span class="string">"first"</span>;</span><br><span class="line">        args[<span class="number">1</span>] = <span class="string">"second"</span>;</span><br><span class="line">        args[<span class="number">2</span>] = <span class="string">"third"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解语法糖后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_4</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo_4</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">transient</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">(String args[])</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        args[<span class="number">0</span>] = <span class="string">"first"</span>;</span><br><span class="line">        args[<span class="number">1</span>] = <span class="string">"second"</span>;</span><br><span class="line">        args[<span class="number">2</span>] = <span class="string">"third"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="条件编译"><a href="#条件编译" class="headerlink" title="条件编译"></a>条件编译</h6><p>消除分支不成立的代码块。如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_5</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"first"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"second"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解语法糖后：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_5</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo_5</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"first"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h6><p>泛型最初生根发芽于C++语言中的模板，后来延伸到Java与C#语言中，但是在Java与C#中泛型的实现是不同的。C#中的泛型是通过CLR实现的，是真实的类型，比如在C#中，List<integer>与List<string>就是完全不同的类型，无论是在 源码期，编译期，还是运行期。这种实现方式被称为类型膨胀，产生的泛型被称为真实泛型。</string></integer></p>
+<p>而在Java，List<integer>与List<string>在编译后就是同一个类型List，多余的类型会被擦除，并使用强制类型转换替代。看到这里很多同学就会明白了，Java中的泛型就是就是一颗语法糖，它也只能减少强制类型转换错误的发生，在运行期它们是没有区别的。这种实现泛型的方式被称为类型擦除，实现的泛型被称为伪泛型。例如：</string></integer></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_6</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo_1</span><span class="params">(List&lt;String&gt; list)</span> </span>&#123;</span><br><span class="line">        list.add(<span class="string">"first"</span>);</span><br><span class="line">        String str = list.get(<span class="number">0</span>);</span><br><span class="line">        System.out.println(<span class="string">"List&lt;String&gt; list"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo_2</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"List&lt;Integer&gt; list"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译 后：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_6</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Demo_6</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo_1</span><span class="params">(List list)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        list.add(<span class="string">"first"</span>);</span><br><span class="line">        String str = (String)list.get(<span class="number">0</span>);</span><br><span class="line">        System.out.println(<span class="string">"List&lt;String&gt; list"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">demo_2</span><span class="params">(List list)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"List&lt;Integer&gt; list"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>细心的同学可能发现了，反编译后，如果两个方法的方法名相同，那么它们的签名应该也是相同的，所以这样的泛型是无法重载的。</p>
+<h6 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h6><p>Java中的枚举其实也是依靠语法糖实现的，本质上还是一个Class类。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Demo_7 &#123;</span><br><span class="line"></span><br><span class="line">    FIRST(<span class="string">"first"</span>),</span><br><span class="line">    SECOND(<span class="string">"second"</span>),</span><br><span class="line">    THIRD(<span class="string">"third"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    Demo_7(String name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译后：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo_7</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Demo_7[] values()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> (Demo_7[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Demo_7 <span class="title">valueOf</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Demo_7)Enum.valueOf(com/example/demo/SyntacticSugar/Demo_7, name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Demo_7</span><span class="params">(String s, <span class="keyword">int</span> i, String name)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Demo_7 FIRST;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Demo_7 SECOND;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Demo_7 THIRD;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Demo_7 $VALUES[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> </span><br><span class="line">    &#123;</span><br><span class="line">        FIRST = <span class="keyword">new</span> Demo_7(<span class="string">"FIRST"</span>, <span class="number">0</span>, <span class="string">"first"</span>);</span><br><span class="line">        SECOND = <span class="keyword">new</span> Demo_7(<span class="string">"SECOND"</span>, <span class="number">1</span>, <span class="string">"second"</span>);</span><br><span class="line">        THIRD = <span class="keyword">new</span> Demo_7(<span class="string">"THIRD"</span>, <span class="number">2</span>, <span class="string">"third"</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Demo_7[] &#123;</span><br><span class="line">            FIRST, SECOND, THIRD</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体的我就不再介绍了，感兴趣的读者可以看看笔者的另一篇博客<a href="https://thatboy.coding.me/2018/03/26/%E6%B5%85%E6%9E%90%E6%9E%9A%E4%B8%BE/" target="_blank" rel="noopener">浅析枚举</a> 。</p>
+<h3 id="晚期优化"><a href="#晚期优化" class="headerlink" title="晚期优化"></a>晚期优化</h3><p>前面提到过，当有些代码路劲的代码执行的很频繁时，虚拟机就会把这些代码标记为热点代码，为了提升这些代码的执行效率，虚拟机会把这些代码编译成机器码，并进行各种优化（在机器码或者字节码到机器码的中间状态中），而这个过程便是通过一个叫做即时编译器的（JIT编译器）东西完成的。下面我们就来了解一下这个即时编译器，本文的虚拟机特指HotSpot虚拟机。</p>
+<h5 id="分层编译策略"><a href="#分层编译策略" class="headerlink" title="分层编译策略"></a>分层编译策略</h5><p>HotSpot虚拟机中是采用分层编译策略来执行代码，具体分为三层，如下：</p>
+<ul>
+<li>第0层：程序解释执行，解释器不开启性能监控功能呢，可触发第一次编译。</li>
+<li>第1层：也称为C1编译（HotSpot中的即时编译器），将字节码编译成本地代码，并进行简单可靠的优化，如有必要将加入性能监控的逻辑。</li>
+<li>第2层（或第2层以上）：也称为C2 编译，也是讲字节码转为机器码，但会启用一些编译耗时较长的优化，甚至会根据性能监控信息进行一些不可靠的激进优化（如果监控到优化失败，则会回退到解释执行，在HotSpot中解释执行作为激进优化失败的逃生门）。</li>
+</ul>
+<h5 id="热点代码"><a href="#热点代码" class="headerlink" title="热点代码"></a>热点代码</h5><p>前面提到热点代码会被编译器编译成机器码，那么这个热点代码到底是什么？事实上，热点代码主要分为两类，如下：</p>
+<ul>
+<li>被多次调用的方法</li>
+<li>被多次执行的循环体</li>
+</ul>
+<p>热点代码说是分为两类，但实际上，第二种的循环体在被编译时，也是编译整个循环体所在的方法，而不是单独的循环体。这种在方法执行过程中编译的编译方式，被称为栈上替换（简称OSR编译），因为方法栈帧还是栈上，但是方法被替代了。</p>
+<p>细心的读者可能会有些困惑，上面在定义热点代码时，用了“多次”这个字眼，这不是一个严谨的术语。“多次”到底是多少次呢？虚拟机有自己的机制来区分什么条件下的一段代码才是热点代码，这种机制叫做热点探测。虚拟机中的热点探测主要分为以下两种：</p>
+<ul>
+<li>基于采样的热点探测：该方法会检测各个线程的栈顶，如果发现某个或某些方法经常出现在栈顶，那这个方法就是热点方法。该种方法的好处是简单高效，还可以很容易获得方法调用关系，缺点是很难精确的确认一个方法的热度，容易受到线程阻塞或者别的外界因素的影响。</li>
+<li>基于计数的热点探测：这种方法会为每个方法或者循环体建立计数器，统计方法的执行次数，如果执行次数超过一定的阈值就认为它是热点方法。这种方法缺点是实现起来麻烦一些，需要为每个方法建立并维护计数器，并且不能获取方法的调用关系，优点是统计结果相对来说更加精确和严谨。</li>
+</ul>
+<p>在HotSpot虚拟机中使用的是第二种方式，它为每个方法准备了两种计数器：方法调用计数器与回边计数器。</p>
+<p>方法调用计数器顾名思义就是统计方法调用的次数，当一个方法被调用时，会首先检查该方法是否存在一个呗JIT编译过的版本，如果存在，则优先使用编译过的版本来执行。如果没有，则将该方法的调用计数器加1，然后判断方法调用计数器与回边计数器之和是够超过方法调用计数器的阈值，如果已超过阈值，则会向JIT提交一个该方法的编译请求（如果不做任何设置，则编译过程是异步的，即该次方法调用不会等待编译请求完成，而是直接解释执行）。方法的执行流程大致如下图所示：</p>
+
+<p>值得注意的是默认情况下，方法调用计数器统计的并不是方法调用的绝对次数，而是一段时间内的相对次数，如果超过了这个时间段，而方法的调用次数还没有超过阈值，则该统计次数会减半，这个叫做热度的衰减，可以通过虚拟机参数来关闭热度的衰减。</p>
+<p>回边计数器统计的是一个方法中循环体执行的次数，当解释器遇到一条回边指令（控制流向后跳转的指令）时，会先查找想要执行的代码片段是否存在已经编译好的版本。如果有，则优先执行已编译好的代码，如果没有，就把回边计数器的值加1，然后判断回边计数器和方法调用计数器的和是否超过回边计数器的阈值。如果超过阈值，则会提交一个OSR编译请求，并且把回边计数器的值降低一些，以便继续在解释器中执行循环，等待编译输出编译结果。它的大致流程如下图所示：</p>
+<img src="/2018/11/14/Java虚拟机中的优化/回边计数器执行过程.png" title="回边计数器执行过程">
+<p>与方法调用计数器不同的是，回边计数器没有热度衰减的过程，它统计的就是循环体执行的绝对次数。</p>
+<h5 id="编译优化技术"><a href="#编译优化技术" class="headerlink" title="编译优化技术"></a>编译优化技术</h5><p>虚拟机团队在即时编译器中增加了很多优化技术，这些优化技术发生在字节码编译成机器码或者是中间代码的过程中。这些优化技术很多，我们常听的或许有方法内联，常量消除，空值消除，公共表达式消除等，可能还有并发相关的锁粗化，锁消除。这些都是在即时编译器中的优化技术，因为优化很多，并且实现很复杂，笔者也只是知其然不知其所以然，就不做详细介绍了。感兴趣的同学可以查看《深入理解Java虚拟机》书中的编译优化章节，里面会有一张优化技术表及常见优化举例。或者也可以查看该链接<a href="https://wiki.openjdk.java.net/display/HotSpot/PerformanceTacticIndex" target="_blank" rel="noopener">即时编译器优化技术表</a> 。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本文简单介绍了虚拟机从源码到机器码的过程中做了哪些事情，希望读者能通过此篇博文能对虚拟机有更清楚的了解。本文是笔者提炼《深入理解Java虚拟机》中的一些章节而成，陈述比较简单。很多东西都没有详细介绍到，如果笔者希望有更深入的了解，可以阅读《深入理解Java虚拟机》和《Java虚拟机规范》等书籍。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编译优化/" rel="tag"># 编译优化</a>
+          
+            <a href="/tags/运行优化/" rel="tag"># 运行优化</a>
+          
+            <a href="/tags/语法糖/" rel="tag"># 语法糖</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/08/java虚拟机（二）-类的加载与执行/" rel="next" title="Java虚拟机（二）-- 类的加载与执行">
+                <i class="fa fa-chevron-left"></i> Java虚拟机（二）-- 类的加载与执行
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/20/内存模型概述/" rel="prev" title="内存模型概述">
+                内存模型概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/海贼3.jpg"
+               alt="zhengrui" />
+          <p class="site-author-name" itemprop="name">zhengrui</p>
+           
+              <p class="site-description motion-element" itemprop="description">读书、健身、旅行</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhezaoyizhuding" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3017970752/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/profile.php?id=100012335677489" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://yk1062008412.github.io" title="我康军的博客" target="_blank">我康军的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhezaoyizhuding.github.io/about/%E6%88%91%E7%9A%84%E7%AE%80%E5%8E%862.2.pdf" title="我的简历" target="_blank">我的简历</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#早期优化"><span class="nav-number">1.</span> <span class="nav-text">早期优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Javac编译器"><span class="nav-number">1.0.1.</span> <span class="nav-text">Javac编译器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#语法糖"><span class="nav-number">1.0.2.</span> <span class="nav-text">语法糖</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#字符串相加"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">字符串相加</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#自动装箱、拆箱"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">自动装箱、拆箱</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#循环遍历"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">循环遍历</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#变长参数"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">变长参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#条件编译"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">条件编译</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#泛型"><span class="nav-number">1.0.2.6.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#枚举"><span class="nav-number">1.0.2.7.</span> <span class="nav-text">枚举</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#晚期优化"><span class="nav-number">2.</span> <span class="nav-text">晚期优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分层编译策略"><span class="nav-number">2.0.1.</span> <span class="nav-text">分层编译策略</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#热点代码"><span class="nav-number">2.0.2.</span> <span class="nav-text">热点代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编译优化技术"><span class="nav-number">2.0.3.</span> <span class="nav-text">编译优化技术</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhengrui</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://zhezaoyizhuding.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://zhezaoyizhuding.github.io/2018/11/14/Java虚拟机中的优化/';
+          this.page.identifier = '2018/11/14/Java虚拟机中的优化/';
+          this.page.title = 'Java虚拟机中的优化';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://zhezaoyizhuding.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("GW32OlXJkBeGE31qrywcmn3a-gzGzoHsz", "1fFuhB2mWMfLiuVyDPOv6dll");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

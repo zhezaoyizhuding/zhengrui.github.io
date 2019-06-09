@@ -1,0 +1,983 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="线性表,树,图," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="ZHENGRUI'BLOG" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="数据结构是面试中常问的一个知识点，它是计算机中用于存储，操作数据的方式。常用的有线性表，树，图等。虽然我作为一个Java工程师对数据结构的使用着实不多，但这也是大学中学过的重要知识点，这里就在这总结以下，万一以后面试时被问到也可以扯一点。 线性表线性表是是常用的数据结构之一，这里要介绍的是数组和链表。这两个是用的最多的线性结构，被广泛用于各种语言，如Java中的集合底层便是由数组和链表组成。 数组">
+<meta name="keywords" content="线性表,树,图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基本数据结构">
+<meta property="og:url" content="https://zhezaoyizhuding.github.io/2017/04/10/基本数据结构/index.html">
+<meta property="og:site_name" content="ZHENGRUI&#39;BLOG">
+<meta property="og:description" content="数据结构是面试中常问的一个知识点，它是计算机中用于存储，操作数据的方式。常用的有线性表，树，图等。虽然我作为一个Java工程师对数据结构的使用着实不多，但这也是大学中学过的重要知识点，这里就在这总结以下，万一以后面试时被问到也可以扯一点。 线性表线性表是是常用的数据结构之一，这里要介绍的是数组和链表。这两个是用的最多的线性结构，被广泛用于各种语言，如Java中的集合底层便是由数组和链表组成。 数组">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-02-07T15:44:13.229Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基本数据结构">
+<meta name="twitter:description" content="数据结构是面试中常问的一个知识点，它是计算机中用于存储，操作数据的方式。常用的有线性表，树，图等。虽然我作为一个Java工程师对数据结构的使用着实不多，但这也是大学中学过的重要知识点，这里就在这总结以下，万一以后面试时被问到也可以扯一点。 线性表线性表是是常用的数据结构之一，这里要介绍的是数组和链表。这两个是用的最多的线性结构，被广泛用于各种语言，如Java中的集合底层便是由数组和链表组成。 数组">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: 'JRBAME0VLD',
+      apiKey: 'b62ed43f602517ec39140c839edfa335',
+      indexName: 'ZHENGRUI',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://zhezaoyizhuding.github.io/2017/04/10/基本数据结构/"/>
+
+
+
+
+
+  <title> 基本数据结构 | ZHENGRUI'BLOG </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZHENGRUI'BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">读书、健身、旅行</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://zhezaoyizhuding.github.io/2017/04/10/基本数据结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhengrui">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/海贼3.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZHENGRUI'BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基本数据结构
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-10T17:12:39+08:00">
+                2017-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构与算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/10/基本数据结构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/04/10/基本数据结构/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/10/基本数据结构/" class="leancloud_visitors" data-flag-title="基本数据结构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>数据结构是面试中常问的一个知识点，它是计算机中用于存储，操作数据的方式。常用的有线性表，树，图等。虽然我作为一个Java工程师对数据结构的使用着实不多，但这也是大学中学过的重要知识点，这里就在这总结以下，万一以后面试时被问到也可以扯一点。</p>
+<h3 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h3><p>线性表是是常用的数据结构之一，这里要介绍的是数组和链表。这两个是用的最多的线性结构，被广泛用于各种语言，如Java中的集合底层便是由数组和链表组成。</p>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>在存储大量数据时数组时被用到最多的数据结构，对这个东西大家应该都比较熟悉，这里就不做赘述了。</p>
+<h4 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h4><p>虽然数组已经很好地满足我们存储大量数据的要求，但是在某些情况下它显然不能是我们满意。比如，如果我们需要经常插入和删除表中的数据时，使用数组的话将非常耗时。同时，数组必须在内存中开辟一个连续的存储空间，对内存的利用率显然不高，这时候我们就可以使用链表。</p>
+<p>链表优于数组的地方在于它可以将零散的内存空间利用起来，只要这块空间足以存储连标点额一个节点即可。如果把数组比作一根铁棒的话，那么链表就是链条，它的使用要比数组更加灵活，但是它也因此失去了数组随机存取的优点。</p>
+<h5 id="链表构建"><a href="#链表构建" class="headerlink" title="链表构建"></a>链表构建</h5><p>链表（这里主要说单链表）有一个个节点组成，节点由数据域和指针域组成。数据域中存储的就是链表中需要存储的数据，指针域存储的是指向下一个节点的指针（如果是双向链表则还有一个指向前一个节点的指针）。</p>
+<p>链表有两种样式，一种是所有的节点都是相同的结构，既存储数据也存储指针；但常用的是另一种的方式，即单独创建一个头节点，这个节点的数据域为空只有一个指向下一个节点的指针，这种方式的好处是便于在头结点处插入节点（即头插法,当然尾插法也是可以的）。</p>
+<p>构建链表主要由两种方式：头插法和尾插法。头插法即是在头结点处插入节点，尾插法是在尾部插入节点。下面是链表构建的两种方式的伪代码。</p>
+<h6 id="节点结构"><a href="#节点结构" class="headerlink" title="节点结构"></a>节点结构</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> LNode&#123;</span><br><span class="line">  ElemType data;</span><br><span class="line">  <span class="keyword">struct</span> *next;</span><br><span class="line">&#125;LNode,*LinkList;</span><br></pre></td></tr></table></figure>
+<h6 id="头插法"><a href="#头插法" class="headerlink" title="头插法"></a>头插法</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateList</span><span class="params">(LinkList &amp;L,<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">  <span class="comment">//逆位序输入n个元素的值，建立带表头结点的单链表L</span></span><br><span class="line">  L=（LinkList）<span class="built_in">malloc</span> (<span class="keyword">sizeof</span> (LNode));   <span class="comment">//创建头结点</span></span><br><span class="line">  L-&gt;next = Null;</span><br><span class="line">  <span class="keyword">for</span>(i=n,i&gt;<span class="number">0</span>;--i)&#123;</span><br><span class="line">    p = (LinkList) <span class="built_in">malloc</span> (<span class="keyword">sizeof</span> (LNode));   <span class="comment">//生成新节点</span></span><br><span class="line">    <span class="built_in">scanf</span>(&amp;p-&gt;data);</span><br><span class="line">    p-&gt;next = L-&gt;next;</span><br><span class="line">    L-&gt;next = p;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="尾插法"><a href="#尾插法" class="headerlink" title="尾插法"></a>尾插法</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateList</span><span class="params">(LinkList &amp;L,<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">  <span class="comment">//尾插法构建链表</span></span><br><span class="line">  L=（LinkList）<span class="built_in">malloc</span> (<span class="keyword">sizeof</span> (LNode));   <span class="comment">//创建头结点</span></span><br><span class="line">  L-&gt;next = Null;</span><br><span class="line">  r=L;</span><br><span class="line">  <span class="keyword">for</span>(i=n,i&gt;<span class="number">0</span>;--i)&#123;</span><br><span class="line">    p = (LinkList) <span class="built_in">malloc</span> (<span class="keyword">sizeof</span> (LNode));   <span class="comment">//生成新节点</span></span><br><span class="line">    <span class="built_in">scanf</span>(&amp;p-&gt;data);</span><br><span class="line">    r-&gt;next = p;</span><br><span class="line">    r = p;</span><br><span class="line">    r-&gt;next = Null;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="链表插入"><a href="#链表插入" class="headerlink" title="链表插入"></a>链表插入</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ListInsert</span><span class="params">(LinkList &amp;L,<span class="keyword">int</span> i,ElemType e)</span></span>&#123;</span><br><span class="line">  <span class="comment">//在带头结点的单链表的第i个元素前插入元素</span></span><br><span class="line">  p=L;</span><br><span class="line">  j=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (p &amp;&amp; j &lt; i<span class="number">-1</span>)&#123;</span><br><span class="line">    p = p-&gt;next;</span><br><span class="line">    ++j;</span><br><span class="line">  &#125;   <span class="comment">//找到第i-1个节点</span></span><br><span class="line">  <span class="keyword">if</span>(!p || j &gt;i<span class="number">-1</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  s = (LinkList) <span class="built_in">malloc</span> (<span class="keyword">sizeof</span> (LNode));</span><br><span class="line">  s-&gt;data = e;</span><br><span class="line">  s-next = p-&gt;next;</span><br><span class="line">  p-&gt;next = s;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="链表删除"><a href="#链表删除" class="headerlink" title="链表删除"></a>链表删除</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ListInsert</span><span class="params">(LinkList &amp;L,<span class="keyword">int</span> i,ElemType e)</span></span>&#123;</span><br><span class="line">  <span class="comment">//在带头结点的单链表中，删除第i个元素并由e返回其值</span></span><br><span class="line">  p=L;</span><br><span class="line">  j=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (p &amp;&amp; j &lt; i<span class="number">-1</span>)&#123;</span><br><span class="line">    p = p-&gt;next;</span><br><span class="line">    ++j;</span><br><span class="line">  &#125;   <span class="comment">//找到第i-1个节点</span></span><br><span class="line">  <span class="keyword">if</span>(!（p-&gt;next） || j &gt;i<span class="number">-1</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  s = p-&gt;next;</span><br><span class="line">  p-&gt;next = s-&gt;next;</span><br><span class="line">  e = s-&gt;data;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="链表合并"><a href="#链表合并" class="headerlink" title="链表合并"></a>链表合并</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeList</span><span class="params">(LinkList &amp;La, LinkList &amp;Lb, LinkList &amp;Lc)</span></span>&#123;</span><br><span class="line">  <span class="comment">//已知单链表La和Lb按值非递减排列，归并得到的单链表Lc也按值非递减排列</span></span><br><span class="line">  pa = La-&gt;next;</span><br><span class="line">  pb = Lb-&gt;next;</span><br><span class="line">  Lc = pc = La;   <span class="comment">//用La的头结点作为Lc的头结点</span></span><br><span class="line">  <span class="keyword">while</span>(pa &amp;&amp; pb)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pa-&gt;data &lt;= pb-&gt;data)&#123;</span><br><span class="line">      pc-&gt;next = pa;</span><br><span class="line">      pc = pa;</span><br><span class="line">      pa = pa-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">      pc-&gt;next = pb;</span><br><span class="line">      pc = pb;</span><br><span class="line">      pb = pb-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  pc-&gt;next = pa ? pa : pb;  <span class="comment">//插入剩余段</span></span><br><span class="line">  <span class="built_in">free</span>(Lb);  <span class="comment">//释放Lb的头结点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="链表反转-该算法即是将一个原有的链表采用头插法的方式生成另一个链表"><a href="#链表反转-该算法即是将一个原有的链表采用头插法的方式生成另一个链表" class="headerlink" title="链表反转(该算法即是将一个原有的链表采用头插法的方式生成另一个链表)"></a>链表反转(该算法即是将一个原有的链表采用头插法的方式生成另一个链表)</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReverseList</span><span class="params">(LinkList &amp;L)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    p = L-&gt;next;             <span class="comment">/*p为原链表的当前处理节点*/</span></span><br><span class="line">    L-&gt;next = <span class="literal">NULL</span>;          <span class="comment">/*逆置单链表初始为空*/</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(p != <span class="literal">NULL</span>)&#123;        <span class="comment">/*当原链表未处理完*/</span></span><br><span class="line">        q = p-&gt;next;         <span class="comment">/*q指针保留原链表当前处理节点的下一个节点*/</span></span><br><span class="line">        p-&gt;next = L-&gt;next;   <span class="comment">/*将当前处理节点p插入到逆置L的表头*/</span></span><br><span class="line">        L-&gt;next = p;</span><br><span class="line">        p = q;               <span class="comment">/*p指向下一个待插入的节点*/</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>树形结构是一种常用的非线性数据结构，其中以树和二叉树最为常用。下面介绍的就是二叉树的遍历与求深度，这两个是面试中最常用的问题。</p>
+<h4 id="树的遍历"><a href="#树的遍历" class="headerlink" title="树的遍历"></a>树的遍历</h4><h5 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">preOrder</span><span class="params">(BiTree T)</span></span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(T)</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">"%d"</span>,T-&gt;data);</span><br><span class="line">     preOrder(T-&gt;lchild);</span><br><span class="line">     preOrder(T-&gt;rchild);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">preOrder</span><span class="params">(BiTree T)</span></span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(T)</span><br><span class="line">   &#123;</span><br><span class="line">     preOrder(T-&gt;lchild);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">"%d"</span>,T-&gt;data);</span><br><span class="line">     preOrder(T-&gt;rchild);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">preOrder</span><span class="params">(BiTree T)</span></span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(T)</span><br><span class="line">   &#123;</span><br><span class="line">     preOrder(T-&gt;lchild);</span><br><span class="line">     preOrder(T-&gt;rchild);</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">"%d"</span>,T-&gt;data);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="求树的深度"><a href="#求树的深度" class="headerlink" title="求树的深度"></a>求树的深度</h5><p>求二叉树的深度有递归和非递归两种方式，递归方式简单但是效率不高。</p>
+<h6 id="递归求解"><a href="#递归求解" class="headerlink" title="递归求解"></a>递归求解</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">FindTreeDeep</span><span class="params">(BinTree BT)</span></span>&#123;</span><br><span class="line">     <span class="keyword">int</span> deep=<span class="number">0</span>;</span><br><span class="line">     <span class="keyword">if</span>(BT)&#123;</span><br><span class="line">         <span class="keyword">int</span> lchilddeep=FindTreeDeep(BT-&gt;lchild);</span><br><span class="line">         <span class="keyword">int</span> rchilddeep=FindTreeDeep(BT-&gt;rchild);</span><br><span class="line">         deep=lchilddeep&gt;=rchilddeep?lchilddeep+<span class="number">1</span>:rchilddeep+<span class="number">1</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> deep;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="非递归求解"><a href="#非递归求解" class="headerlink" title="非递归求解"></a>非递归求解</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">TreeDeep</span><span class="params">(BinTree BT )</span></span>&#123;</span><br><span class="line">      <span class="keyword">int</span> treedeep=<span class="number">0</span>;</span><br><span class="line">      <span class="built_in">stack</span> S;</span><br><span class="line">      <span class="built_in">stack</span> tag;</span><br><span class="line">      BinTree p=BT;</span><br><span class="line">      <span class="keyword">while</span>(p!=<span class="literal">NULL</span>&amp;&amp;!isEmpty(S))&#123;</span><br><span class="line">          <span class="keyword">while</span>(p!=<span class="literal">NULL</span>)&#123;</span><br><span class="line">              push(S,p);</span><br><span class="line">              push(tag,<span class="number">0</span>);</span><br><span class="line">             p=p-&gt;lchild;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span>(Top(tag)==<span class="number">1</span>)&#123;</span><br><span class="line">             deeptree=deeptree&gt;S.length?deeptree:S.length;</span><br><span class="line">             pop(S);</span><br><span class="line">             pop(tag);</span><br><span class="line">             p=<span class="literal">NULL</span>;</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">             p=Top(S);</span><br><span class="line">             p=p-&gt;rchild;</span><br><span class="line">             pop(tag);</span><br><span class="line">             push(tag,<span class="number">1</span>);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> deeptree;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="图"><a href="#图" class="headerlink" title="图"></a>图</h3><p>图是一种比线性表和树更复杂的数据结构，它的任意两个节点之间都可能相关联。它和树一样都有自己的专业术语，如顶点，边，弧等（这些专业术语和前面的树一样就不介绍了）。图既然如此复杂那么如何存储它呢？常用的有数组，邻接表，十字链表，邻接多重表等，这里也不一一介绍了，这里主要介绍一下图的遍历与最小生成树</p>
+<h4 id="图的遍历"><a href="#图的遍历" class="headerlink" title="图的遍历"></a>图的遍历</h4><h5 id="深度优先搜索–递归"><a href="#深度优先搜索–递归" class="headerlink" title="深度优先搜索–递归"></a>深度优先搜索–递归</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(MGraph G,<span class="keyword">int</span> v)</span>      <span class="comment">//深度优先搜索</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d "</span>,v);          <span class="comment">//访问结点v</span></span><br><span class="line">    visited[v]=<span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;G.n;i++)       <span class="comment">//访问与v相邻的未被访问过的结点</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(G.edges[v][i]!=<span class="number">0</span>&amp;&amp;visited[i]==<span class="literal">false</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            DFS(G,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="深度优先搜索–非递归"><a href="#深度优先搜索–非递归" class="headerlink" title="深度优先搜索–非递归"></a>深度优先搜索–非递归</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS1</span><span class="params">(MGraph G,<span class="keyword">int</span> v)</span>   <span class="comment">//非递归实现</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d "</span>,v);        <span class="comment">//访问初始结点</span></span><br><span class="line">    visited[v]=<span class="literal">true</span>;</span><br><span class="line">    s.push(v);              <span class="comment">//入栈</span></span><br><span class="line">    <span class="keyword">while</span>(!s.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> i,j;</span><br><span class="line">        i=s.top();          <span class="comment">//取栈顶顶点</span></span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;G.n;j++)  <span class="comment">//访问与顶点i相邻的顶点</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(G.edges[i][j]!=<span class="number">0</span>&amp;&amp;visited[j]==<span class="literal">false</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%d "</span>,j);     <span class="comment">//访问</span></span><br><span class="line">                visited[j]=<span class="literal">true</span>;</span><br><span class="line">                s.push(j);           <span class="comment">//访问完后入栈</span></span><br><span class="line">                <span class="keyword">break</span>;               <span class="comment">//找到一个相邻未访问的顶点，访问之后则跳出循环</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(j==G.n)                   <span class="comment">//如果与i相邻的顶点都被访问过，则将顶点i出栈</span></span><br><span class="line">            s.pop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">(MGraph G,<span class="keyword">int</span> v)</span>      <span class="comment">//广度优先搜索</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; Q;             <span class="comment">//STL模板中的queue</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d "</span>,v);</span><br><span class="line">    visited[v]=<span class="literal">true</span>;</span><br><span class="line">    Q.push(v);</span><br><span class="line">    <span class="keyword">while</span>(!Q.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> i,j;</span><br><span class="line">        i=Q.front();         <span class="comment">//取队首顶点</span></span><br><span class="line">        Q.pop();</span><br><span class="line">        <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;G.n;j++)   <span class="comment">//广度遍历</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(G.edges[i][j]!=<span class="number">0</span>&amp;&amp;visited[j]==<span class="literal">false</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%d "</span>,j);</span><br><span class="line">                visited[j]=<span class="literal">true</span>;</span><br><span class="line">                Q.push(j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="图的最小生成树"><a href="#图的最小生成树" class="headerlink" title="图的最小生成树"></a>图的最小生成树</h4><p>求图的最小生成树的算法著名的是普里姆算法（加点法）和克鲁斯卡尔算法（加边法，用于求边稀疏的图）。</p>
+<h5 id="普里姆算法（加点法）"><a href="#普里姆算法（加点法）" class="headerlink" title="普里姆算法（加点法）"></a>普里姆算法（加点法）</h5><h5 id="克鲁斯卡尔算法（加边法）"><a href="#克鲁斯卡尔算法（加边法）" class="headerlink" title="克鲁斯卡尔算法（加边法）"></a>克鲁斯卡尔算法（加边法）</h5><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这里主要介绍的是基本数据结构中面试常会遇到的算法，而在这些数据结构本身的介绍并不全面，比如队列和栈就没介绍，树的完全二叉树，B树，红黑树和它的很多其他概念，还有图的连通性，最短路径等均没有介绍，读者如果对这些感兴趣可以在网上搜索或者查阅相关的书籍资料。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/线性表/" rel="tag"># 线性表</a>
+          
+            <a href="/tags/树/" rel="tag"># 树</a>
+          
+            <a href="/tags/图/" rel="tag"># 图</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/10/查找/" rel="next" title="查找">
+                <i class="fa fa-chevron-left"></i> 查找
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/02/几种流行的JSON库介绍/" rel="prev" title="几种流行的JSON库介绍">
+                几种流行的JSON库介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/海贼3.jpg"
+               alt="zhengrui" />
+          <p class="site-author-name" itemprop="name">zhengrui</p>
+           
+              <p class="site-description motion-element" itemprop="description">读书、健身、旅行</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhezaoyizhuding" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3017970752/profile?rightmod=1&wvr=6&mod=personinfo&is_all=1" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/profile.php?id=100012335677489" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://yk1062008412.github.io" title="我康军的博客" target="_blank">我康军的博客</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://zhezaoyizhuding.github.io/about/%E6%88%91%E7%9A%84%E7%AE%80%E5%8E%862.2.pdf" title="我的简历" target="_blank">我的简历</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性表"><span class="nav-number">1.</span> <span class="nav-text">线性表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数组"><span class="nav-number">1.1.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链表"><span class="nav-number">1.2.</span> <span class="nav-text">链表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#链表构建"><span class="nav-number">1.2.1.</span> <span class="nav-text">链表构建</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#节点结构"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">节点结构</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#头插法"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">头插法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#尾插法"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">尾插法</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#链表插入"><span class="nav-number">1.2.2.</span> <span class="nav-text">链表插入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#链表删除"><span class="nav-number">1.2.3.</span> <span class="nav-text">链表删除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#链表合并"><span class="nav-number">1.2.4.</span> <span class="nav-text">链表合并</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#链表反转-该算法即是将一个原有的链表采用头插法的方式生成另一个链表"><span class="nav-number">1.2.5.</span> <span class="nav-text">链表反转(该算法即是将一个原有的链表采用头插法的方式生成另一个链表)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树"><span class="nav-number">2.</span> <span class="nav-text">树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#树的遍历"><span class="nav-number">2.1.</span> <span class="nav-text">树的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#先序遍历"><span class="nav-number">2.1.1.</span> <span class="nav-text">先序遍历</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中序遍历"><span class="nav-number">2.1.2.</span> <span class="nav-text">中序遍历</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#后序遍历"><span class="nav-number">2.1.3.</span> <span class="nav-text">后序遍历</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#求树的深度"><span class="nav-number">2.1.4.</span> <span class="nav-text">求树的深度</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#递归求解"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">递归求解</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#非递归求解"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">非递归求解</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图"><span class="nav-number">3.</span> <span class="nav-text">图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#图的遍历"><span class="nav-number">3.1.</span> <span class="nav-text">图的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#深度优先搜索–递归"><span class="nav-number">3.1.1.</span> <span class="nav-text">深度优先搜索–递归</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#深度优先搜索–非递归"><span class="nav-number">3.1.2.</span> <span class="nav-text">深度优先搜索–非递归</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#广度优先搜索"><span class="nav-number">3.1.3.</span> <span class="nav-text">广度优先搜索</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图的最小生成树"><span class="nav-number">3.2.</span> <span class="nav-text">图的最小生成树</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#普里姆算法（加点法）"><span class="nav-number">3.2.1.</span> <span class="nav-text">普里姆算法（加点法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#克鲁斯卡尔算法（加边法）"><span class="nav-number">3.2.2.</span> <span class="nav-text">克鲁斯卡尔算法（加边法）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhengrui</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://zhezaoyizhuding.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://zhezaoyizhuding.github.io/2017/04/10/基本数据结构/';
+          this.page.identifier = '2017/04/10/基本数据结构/';
+          this.page.title = '基本数据结构';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://zhezaoyizhuding.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("GW32OlXJkBeGE31qrywcmn3a-gzGzoHsz", "1fFuhB2mWMfLiuVyDPOv6dll");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
