@@ -4,6 +4,24 @@
 
     
   <url>
+    <loc>https://zhezaoyizhuding.github.io/2020/02/02/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93%C2%B72019/</loc>
+    <lastmod>2020-02-02T15:43:08.138Z</lastmod>
+    <data>
+        <display>
+        <title>年终总结·2019</title>
+        <pubTime>2020-02-02T09:42:59.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="生活杂谈" url="https://zhezaoyizhuding.github.io/categories/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://zhezaoyizhuding.github.io/2020/01/12/%E6%8A%95%E8%B5%84%E6%AF%8F%E5%91%A8%E5%AE%9E%E5%BD%95-%E5%9B%9B/</loc>
     <lastmod>2020-01-12T12:22:33.557Z</lastmod>
     <data>
@@ -324,6 +342,26 @@
     
     
   <url>
+    <loc>https://zhezaoyizhuding.github.io/2017/11/04/%E9%87%8D%E6%9E%84%E6%96%B9%E6%B3%95%E5%88%97%E8%A1%A8/</loc>
+    <lastmod>2019-02-07T15:44:13.246Z</lastmod>
+    <data>
+        <display>
+        <title>重构方法列表</title>
+        <pubTime>2017-11-04T07:08:19.000Z</pubTime>
+        
+        <tag>重构</tag>
+         
+         
+           
+             
+              <breadCrumb title="代码规约" url="https://zhezaoyizhuding.github.io/categories/%E4%BB%A3%E7%A0%81%E8%A7%84%E7%BA%A6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://zhezaoyizhuding.github.io/2017/11/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AE%B0%E5%BF%86%E4%B9%A6/</loc>
     <lastmod>2019-02-07T15:44:13.246Z</lastmod>
     <data>
@@ -343,26 +381,6 @@
            
              
               <breadCrumb title="设计模式" url="https://zhezaoyizhuding.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://zhezaoyizhuding.github.io/2017/11/04/%E9%87%8D%E6%9E%84%E6%96%B9%E6%B3%95%E5%88%97%E8%A1%A8/</loc>
-    <lastmod>2019-02-07T15:44:13.246Z</lastmod>
-    <data>
-        <display>
-        <title>重构方法列表</title>
-        <pubTime>2017-11-04T07:08:19.000Z</pubTime>
-        
-        <tag>重构</tag>
-         
-         
-           
-             
-              <breadCrumb title="代码规约" url="https://zhezaoyizhuding.github.io/categories/%E4%BB%A3%E7%A0%81%E8%A7%84%E7%BA%A6/"/>
           
         </display>
     </data>
@@ -426,9 +444,9 @@
         <title>设计模式之单例模式</title>
         <pubTime>2017-03-28T02:09:18.000Z</pubTime>
         
-        <tag>单例模式</tag>
-         
         <tag>创建型模式</tag>
+         
+        <tag>单例模式</tag>
          
          
            
@@ -541,14 +559,14 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2018/07/23/%E6%B5%85%E6%9E%90Java%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-2-CyclicBarrier/</loc>
+    <loc>https://zhezaoyizhuding.github.io/2018/07/25/%E6%B5%85%E6%9E%90Java%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-3-Semaphore/</loc>
     <lastmod>2019-02-07T15:44:13.237Z</lastmod>
     <data>
         <display>
-        <title>浅析Java并发工具类(2) - CyclicBarrier</title>
-        <pubTime>2018-07-23T14:18:41.000Z</pubTime>
+        <title>浅析Java并发工具类(3) - Semaphore</title>
+        <pubTime>2018-07-25T06:05:12.000Z</pubTime>
         
-        <tag>CyclicBarrier</tag>
+        <tag>Semaphore</tag>
          
          
            
@@ -561,14 +579,14 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2018/07/25/%E6%B5%85%E6%9E%90Java%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-3-Semaphore/</loc>
+    <loc>https://zhezaoyizhuding.github.io/2018/07/23/%E6%B5%85%E6%9E%90Java%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB-2-CyclicBarrier/</loc>
     <lastmod>2019-02-07T15:44:13.237Z</lastmod>
     <data>
         <display>
-        <title>浅析Java并发工具类(3) - Semaphore</title>
-        <pubTime>2018-07-25T06:05:12.000Z</pubTime>
+        <title>浅析Java并发工具类(2) - CyclicBarrier</title>
+        <pubTime>2018-07-23T14:18:41.000Z</pubTime>
         
-        <tag>Semaphore</tag>
+        <tag>CyclicBarrier</tag>
          
          
            
@@ -673,6 +691,26 @@
 
     
   <url>
+    <loc>https://zhezaoyizhuding.github.io/2018/08/07/%E6%B5%85%E6%9E%90Executor-5-Executors/</loc>
+    <lastmod>2019-02-07T15:44:13.234Z</lastmod>
+    <data>
+        <display>
+        <title>浅析Executor-5-Executors</title>
+        <pubTime>2018-08-07T14:13:30.000Z</pubTime>
+        
+        <tag>Executors</tag>
+         
+         
+           
+             
+              <breadCrumb title="Java源码浅析" url="https://zhezaoyizhuding.github.io/categories/Java%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://zhezaoyizhuding.github.io/2018/08/07/%E6%B5%85%E6%9E%90Executor-6-CompletionService/</loc>
     <lastmod>2019-02-07T15:44:13.234Z</lastmod>
     <data>
@@ -693,19 +731,19 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2018/08/07/%E6%B5%85%E6%9E%90Executor-5-Executors/</loc>
-    <lastmod>2019-02-07T15:44:13.234Z</lastmod>
+    <loc>https://zhezaoyizhuding.github.io/2018/11/20/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0/</loc>
+    <lastmod>2019-02-07T15:44:13.229Z</lastmod>
     <data>
         <display>
-        <title>浅析Executor-5-Executors</title>
-        <pubTime>2018-08-07T14:13:30.000Z</pubTime>
+        <title>内存模型概述</title>
+        <pubTime>2018-11-20T08:40:49.000Z</pubTime>
         
-        <tag>Executors</tag>
+        <tag>内存模型</tag>
          
          
            
              
-              <breadCrumb title="Java源码浅析" url="https://zhezaoyizhuding.github.io/categories/Java%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/"/>
+              <breadCrumb title="Java虚拟机" url="https://zhezaoyizhuding.github.io/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
           
         </display>
     </data>
@@ -739,26 +777,6 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2018/11/20/%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E6%A6%82%E8%BF%B0/</loc>
-    <lastmod>2019-02-07T15:44:13.229Z</lastmod>
-    <data>
-        <display>
-        <title>内存模型概述</title>
-        <pubTime>2018-11-20T08:40:49.000Z</pubTime>
-        
-        <tag>内存模型</tag>
-         
-         
-           
-             
-              <breadCrumb title="Java虚拟机" url="https://zhezaoyizhuding.github.io/categories/Java%E8%99%9A%E6%8B%9F%E6%9C%BA/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://zhezaoyizhuding.github.io/2017/04/10/%E6%9F%A5%E6%89%BE/</loc>
     <lastmod>2019-02-07T15:44:13.229Z</lastmod>
     <data>
@@ -766,30 +784,6 @@
         <title>查找</title>
         <pubTime>2017-04-10T09:12:07.000Z</pubTime>
         
-         
-           
-             
-              <breadCrumb title="数据结构与算法" url="https://zhezaoyizhuding.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://zhezaoyizhuding.github.io/2017/04/10/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2019-02-07T15:44:13.229Z</lastmod>
-    <data>
-        <display>
-        <title>基本数据结构</title>
-        <pubTime>2017-04-10T09:12:39.000Z</pubTime>
-        
-        <tag>线性表</tag>
-         
-        <tag>树</tag>
-         
-        <tag>图</tag>
-         
          
            
              
@@ -825,6 +819,30 @@
 
     
   <url>
+    <loc>https://zhezaoyizhuding.github.io/2017/04/10/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2019-02-07T15:44:13.229Z</lastmod>
+    <data>
+        <display>
+        <title>基本数据结构</title>
+        <pubTime>2017-04-10T09:12:39.000Z</pubTime>
+        
+        <tag>线性表</tag>
+         
+        <tag>树</tag>
+         
+        <tag>图</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据结构与算法" url="https://zhezaoyizhuding.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://zhezaoyizhuding.github.io/2017/04/10/%E6%8E%92%E5%BA%8F/</loc>
     <lastmod>2019-02-07T15:44:13.229Z</lastmod>
     <data>
@@ -838,28 +856,6 @@
            
              
               <breadCrumb title="数据结构与算法" url="https://zhezaoyizhuding.github.io/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://zhezaoyizhuding.github.io/2018/12/11/hystrix%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/</loc>
-    <lastmod>2019-02-07T15:44:13.223Z</lastmod>
-    <data>
-        <display>
-        <title>Hystrix源码浅析</title>
-        <pubTime>2018-12-11T07:28:16.000Z</pubTime>
-        
-        <tag>spring cloud</tag>
-         
-        <tag>hystrix</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring cloud源码浅析" url="https://zhezaoyizhuding.github.io/categories/spring-cloud%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/"/>
           
         </display>
     </data>
@@ -882,6 +878,28 @@
            
              
               <breadCrumb title="Java基础知识" url="https://zhezaoyizhuding.github.io/categories/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://zhezaoyizhuding.github.io/2018/12/11/hystrix%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/</loc>
+    <lastmod>2019-02-07T15:44:13.223Z</lastmod>
+    <data>
+        <display>
+        <title>Hystrix源码浅析</title>
+        <pubTime>2018-12-11T07:28:16.000Z</pubTime>
+        
+        <tag>spring cloud</tag>
+         
+        <tag>hystrix</tag>
+         
+         
+           
+             
+              <breadCrumb title="spring cloud源码浅析" url="https://zhezaoyizhuding.github.io/categories/spring-cloud%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/"/>
           
         </display>
     </data>
@@ -1166,30 +1184,6 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2017/02/28/android%E5%9F%BA%E7%A1%80%E4%B9%8BSQLite/</loc>
-    <lastmod>2019-02-07T15:44:13.205Z</lastmod>
-    <data>
-        <display>
-        <title>android基础之SQLite</title>
-        <pubTime>2017-02-28T10:03:32.000Z</pubTime>
-        
-        <tag>android</tag>
-         
-        <tag>java</tag>
-         
-        <tag>SQLite</tag>
-         
-         
-           
-             
-              <breadCrumb title="android" url="https://zhezaoyizhuding.github.io/categories/android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://zhezaoyizhuding.github.io/2017/02/27/android%E5%9F%BA%E7%A1%80%E4%B9%8BService/</loc>
     <lastmod>2019-02-07T15:44:13.205Z</lastmod>
     <data>
@@ -1202,6 +1196,30 @@
         <tag>java</tag>
          
         <tag>service</tag>
+         
+         
+           
+             
+              <breadCrumb title="android" url="https://zhezaoyizhuding.github.io/categories/android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://zhezaoyizhuding.github.io/2017/02/28/android%E5%9F%BA%E7%A1%80%E4%B9%8BSQLite/</loc>
+    <lastmod>2019-02-07T15:44:13.205Z</lastmod>
+    <data>
+        <display>
+        <title>android基础之SQLite</title>
+        <pubTime>2017-02-28T10:03:32.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>java</tag>
+         
+        <tag>SQLite</tag>
          
          
            
@@ -1540,18 +1558,16 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2017/03/17/Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%B3%A8%E8%A7%A3/</loc>
+    <loc>https://zhezaoyizhuding.github.io/2017/03/17/Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%B3%9B%E5%9E%8B/</loc>
     <lastmod>2019-02-07T15:44:13.190Z</lastmod>
     <data>
         <display>
-        <title>Java基础之注解</title>
-        <pubTime>2017-03-17T02:26:21.000Z</pubTime>
+        <title>Java基础之泛型</title>
+        <pubTime>2017-03-17T02:26:13.000Z</pubTime>
         
         <tag>Java</tag>
          
-        <tag>注解</tag>
-         
-        <tag>注释</tag>
+        <tag>泛型</tag>
          
          
            
@@ -1564,16 +1580,18 @@
 
     
   <url>
-    <loc>https://zhezaoyizhuding.github.io/2017/03/17/Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%B3%9B%E5%9E%8B/</loc>
+    <loc>https://zhezaoyizhuding.github.io/2017/03/17/Java%E5%9F%BA%E7%A1%80%E4%B9%8B%E6%B3%A8%E8%A7%A3/</loc>
     <lastmod>2019-02-07T15:44:13.190Z</lastmod>
     <data>
         <display>
-        <title>Java基础之泛型</title>
-        <pubTime>2017-03-17T02:26:13.000Z</pubTime>
+        <title>Java基础之注解</title>
+        <pubTime>2017-03-17T02:26:21.000Z</pubTime>
         
         <tag>Java</tag>
          
-        <tag>泛型</tag>
+        <tag>注解</tag>
+         
+        <tag>注释</tag>
          
          
            
